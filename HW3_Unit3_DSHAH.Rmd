@@ -1,0 +1,232 @@
+---
+title: "HW3_Unit3_DSHAH"
+author: "Dhyan Shah"
+date: "1/23/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Dhyan Shah - 47998760
+## Live Session Unit 03 assignment
+## MSDS 6306-402
+
+## Question 1 - GitHub Cloning ##
+
+    ## setwd("~/Desktop/DoingDataScience/Unit3/HW3_2"
+    ## git clone https://github.com/awesomedata/awesome-public-datasets.git
+    ## ls
+    ## cd 
+
+## Question 2 - Data Summary  ##
+    ## 2.a.
+```{r titanic}
+df <- read.csv("titanic.csv")
+str(df)
+head(df)
+summary(df)
+## print(df)
+
+
+is.data.frame(df)
+
+## print(df$Sex)
+summary(df$Sex)
+
+fem <- subset(df, df$Sex == "female")
+## print(fem)
+
+mel <- subset(df, df$Sex == "male")
+## print(mel)
+
+
+```
+
+# Question 2 - Data Summary  ##
+  ## 2.b. 
+
+```{r}
+table(df$Sex)
+table(df$Age)
+table(df$Fare)
+table(df$Survived)
+table(df$Survived, df$Age)
+table(df$Survived, df$Age, df$Sex)
+table(df$Pclass, df$Survived)
+
+barplot(table(df$Sex), xlab="Sex", ylab="Frequency", main="Titanic Passanger Gender Frequency", col="violet")
+```
+
+# Question 2 - Data Summary  ##
+  ## 2.c.
+
+```{r}
+
+
+sapply(df, class)
+tapply(df$Age, df$Fare, mean, is.na = TRUE)
+tapply(df$Survived, df$Age, mean, is.na = TRUE)
+tapply(df$Survived, df$Fare, mean, is.na = TRUE)
+
+```
+
+# Question 3 - Function Building  ##
+  ## 3.a.
+```{r}  
+read.csv("sleep_data_01.csv")
+fb <- read.csv("sleep_data_01.csv")
+str(fb)
+table(fb$Age)
+Med_Age <- median(table(fb$Age))
+print(Med_Age)
+
+table(fb$Duration)
+Min_Dur <- min(table(fb$Duration))
+print(Min_Dur)
+
+Max_Dur <- max(table(fb$Duration))
+print(Max_Dur)
+
+Mean_RSES <- mean(table(fb$RSES))
+print(Mean_RSES)
+
+sd_RSES <- sd(table(fb$RSES))
+print(sd_RSES)
+
+tapply(fb$Age, fb$RSES, mean, is.na = TRUE)
+tapply(fb$Age, fb$Duration, mean, is.na = TRUE)
+tapply(fb$Age, fb$RSES, sd, na.rm = FALSE)
+```
+# Question 3 - Function Building  ##
+  ## 3.b.
+  
+```{r} 
+## Range 
+table(fb$Duration)
+ran_duration <- range(table(fb$Duration))
+r_duration <- (max(ran_duration) - min(ran_duration))
+print(r_duration)
+
+xdf <- c(Med_Age, Mean_RSES/5, sd_RSES/5)
+print(xdf)
+
+ydf <- c(xdf, r_duration)
+print(ydf)
+
+## report <- data.frame(xdf, ydf)
+
+report <- data.frame(Med_Age, Mean_RSES/5, 
+                     sd_RSES/5, r_duration)
+print(report)
+```
+# Question 3 - Function Building  ##
+  ## 3.c.
+```{r} 
+ ## c. change the column name of data frame to MedianAge, SelfEsteem, SE_SD, and DurationRange.
+report <- data.frame(MedianAge=Med_Age, SelfEsteem=Mean_RSES, SE_SD=sd_RSES, DurationRange=r_duration)
+print(report) 
+```
+
+# Question 3 - Function Building  ##
+  ## 3.d.
+```{r} 
+ ## d. round the report to at most 2 digit. 
+round(report, digits = 2)
+```
+
+# Question 3 - Function Building  ##
+  ## 3.d.
+```{r} 
+  ## e. run function on sleep data (sleep_data01.csv), show output 
+```
+
+# Question 4 - FiveThirtyEightData  ##
+  ## 4.a.
+```{r} 
+   ## HW3_2 Dhyan$ git clone https://github.com/rudeboybert/fivethirtyeight
+# install.packages("fivethirtyeight")
+# data(package = "fivethirtyeight")
+```
+# Question 4 - FiveThirtyEightData  ##
+  ## 4.b.
+```{r} 
+   library(fivethirtyeight)
+data(college_recent_grads)
+head(college_recent_grads)
+#View(college_recent_grads)
+df <- college_recent_grads
+```
+# Question 4 - FiveThirtyEightData  ##
+  ## 4.c.
+```{r} 
+   ??college_recent_grads
+## https://fivethirtyeight.com/features/the-economic-guide-to-picking-a-college-major/
+```
+# Question 4 - FiveThirtyEightData  ##
+  ## 4.d.
+```{r} 
+dim(df)
+colnames (df, do.NULL = FALSE, prefix = "col")
+```
+
+# Question 5 - Data Summary  ##
+  ## 5.a.
+```{r} 
+  ## 5.a. Column Names, Column Counts 
+colnames (df, do.NULL = FALSE, prefix = "col")
+ncol(df)
+```
+
+# Question 5 - Data Summary  ##
+  ## 5.b.
+```{r} 
+ ## 5.b. count each unique major_category, 
+
+library(plyr)
+major_count<- count(df$major_category)
+print(major_count)
+
+## Reference for 5.b. 
+  ## https://www.tutorialspoint.com
+  ## https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf
+  ## https://stackoverflow.com
+  ## RStudio Help
+  ## Noelle Brown :) THANK YOU!!
+```
+
+
+# Question 5 - Data Summary  ##
+  ## 5.c.
+```{r} 
+  library(ggplot2)
+
+ggplot(data=major_count, aes(x=major_count$x, y=major_count$freq, xlab = "Frequncy", ylab = "Majors", ,main = "Number of Majors"))+geom_bar(stat = "identity", col = "yellow")+coord_flip()
+
+```
+
+# Question 5 - Data Summary  ##
+  ## 5.d.
+```{r} 
+ xf <- data.frame(college_recent_grads)
+write.table(xf, file="collegerecentgrads.csv", sep=",", row.names = FALSE, quote = FALSE)
+```
+
+
+
+## Question 6 - Codebook ##
+  ## 6.a,b,c,d
+```{r} 
+## http://github.com/dhyanshah/SMU_MSDS_6306_HW/README.md
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
